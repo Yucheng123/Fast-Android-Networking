@@ -463,7 +463,7 @@ public class ANRequest<T extends ANRequest> {
                         @Override
                         public void run() {
                             if (mDownloadListener != null) {
-                                mDownloadListener.onDownloadComplete();
+                                mDownloadListener.onDownloadComplete(mFileName);//pass downloaded file's filename
                             }
                             finish();
                         }
