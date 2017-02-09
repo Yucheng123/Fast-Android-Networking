@@ -182,6 +182,18 @@ public final class InternalNetworking {
             final long startTime = System.currentTimeMillis();
             final long startBytes = TrafficStats.getTotalRxBytes();
             okHttpResponse = request.getCall().execute();
+            if(request.getFileName()==null)
+            {
+                String filenameList=okHttpResponse.headers().get("Content-Disposition");
+                String[] filename=filenameList.split(";");
+                for(int i=0;i<filename.length;i++)
+                {
+                    if(filename[i].contains("filename="))
+                    {
+                        request.setFileName(filename[i].substring(11,filename[i].length()-1));
+                    }
+                }
+            }
             Utils.saveFile(okHttpResponse, request.getDirPath(), request.getFileName());
             final long timeTaken = System.currentTimeMillis() - startTime;
             if (okHttpResponse.cacheResponse() == null) {
